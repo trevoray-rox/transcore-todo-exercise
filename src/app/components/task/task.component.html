@@ -1,0 +1,68 @@
+<div class="task-card" [class.completed]="task.status === 'Completed'">
+
+  <!-- View Mode -->
+  <div *ngIf="!isEditing" class="task-view">
+    <div class="task-header">
+      <h3 class="task-title">{{ task.title }}</h3>
+      <span class="status-badge" [ngClass]="getStatusClass(task.status)">
+        {{ task.status }}
+      </span>
+    </div>
+
+    <p class="task-description" *ngIf="task.description">{{ task.description }}</p>
+
+    <div class="task-actions">
+      <button class="btn btn-edit" (click)="toggleEdit()">Edit</button>
+      <button
+        class="btn btn-complete"
+        (click)="markCompleted()"
+        [disabled]="task.status === 'Completed'">
+        Mark Complete
+      </button>
+      <button class="btn btn-delete" (click)="deleteTask()">Delete</button>
+    </div>
+  </div>
+
+  <!-- Edit Mode -->
+  <div *ngIf="isEditing" class="task-edit">
+    <form [formGroup]="editForm" (ngSubmit)="saveTask()">
+
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input
+          id="title"
+          type="text"
+          formControlName="title"
+          class="form-control"
+          [class.is-invalid]="editForm.get('title')?.invalid && editForm.get('title')?.touched" />
+        <div class="error-message" *ngIf="editForm.get('title')?.invalid && editForm.get('title')?.touched">
+          Title is required.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea
+          id="description"
+          formControlName="description"
+          class="form-control"
+          rows="2">
+        </textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="status">Status</label>
+        <select id="status" formControlName="status" class="form-control">
+          <option *ngFor="let s of statuses" [value]="s">{{ s }}</option>
+        </select>
+      </div>
+
+      <div class="task-actions">
+        <button type="submit" class="btn btn-save" [disabled]="editForm.invalid">Save</button>
+        <button type="button" class="btn btn-cancel" (click)="toggleEdit()">Cancel</button>
+      </div>
+
+    </form>
+  </div>
+
+</div>

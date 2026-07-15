@@ -1,0 +1,109 @@
+.task-card {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+  transition: box-shadow 0.2s ease;
+}
+
+.task-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.task-card.completed {
+  opacity: 0.7;
+  background: #f9f9f9;
+}
+
+.task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.task-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.task-description {
+  color: #666;
+  font-size: 0.9rem;
+  margin: 8px 0;
+}
+
+.status-badge {
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.status-new { background: #e3f2fd; color: #1565c0; }
+.status-inprogress { background: #fff8e1; color: #f57f17; }
+.status-rejected { background: #fce4ec; color: #c62828; }
+.status-verified { background: #e8f5e9; color: #2e7d32; }
+.status-completed { background: #ede7f6; color: #4527a0; }
+
+.task-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.btn {
+  padding: 6px 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn-edit { background: #e3f2fd; color: #1565c0; }
+.btn-complete { background: #e8f5e9; color: #2e7d32; }
+.btn-delete { background: #fce4ec; color: #c62828; }
+.btn-save { background: #1565c0; color: white; }
+.btn-cancel { background: #e0e0e0; color: #333; }
+
+.form-group {
+  margin-bottom: 12px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 4px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+}
+
+.form-control.is-invalid {
+  border-color: #c62828;
+}
+
+.error-message {
+  color: #c62828;
+  font-size: 0.8rem;
+  margin-top: 4px;
+}
