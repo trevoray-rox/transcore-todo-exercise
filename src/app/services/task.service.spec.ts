@@ -6,6 +6,7 @@ describe('TaskService', () => {
   let service: TaskService;
 
   beforeEach(() => {
+    localStorage.clear();
     TestBed.configureTestingModule({});
     service = TestBed.inject(TaskService);
   });
@@ -53,6 +54,13 @@ describe('TaskService', () => {
       expect(task.title).toBe('My Title');
       expect(task.description).toBe('My Description');
     });
+
+    it('should persist the new task to localStorage', () => {
+      service.addTask('Persisted Task', '');
+      const stored = JSON.parse(localStorage.getItem('todo_tasks') || '[]');
+      const found = stored.find((t: Task) => t.title === 'Persisted Task');
+      expect(found).toBeTruthy();
+    });
   });
 
   describe('updateTask()', () => {
@@ -75,6 +83,14 @@ describe('TaskService', () => {
     it('should return null if task id does not exist', () => {
       const result = service.updateTask(99999, { status: 'Completed' });
       expect(result).toBeNull();
+    });
+
+    it('should persist the update to localStorage', () => {
+      const task = service.addTask('Persist Update', '');
+      service.updateTask(task.id, { status: 'Verified' });
+      const stored = JSON.parse(localStorage.getItem('todo_tasks') || '[]');
+      const found = stored.find((t: Task) => t.id === task.id);
+      expect(found?.status).toBe('Verified');
     });
   });
 
@@ -106,6 +122,14 @@ describe('TaskService', () => {
       const kept = tasks.find(t => t.id === task1.id);
       expect(kept).toBeTruthy();
     });
+
+    it('should remove the task from localStorage', () => {
+      const task = service.addTask('Delete From Storage', '');
+      service.deleteTask(task.id);
+      const stored = JSON.parse(localStorage.getItem('todo_tasks') || '[]');
+      const found = stored.find((t: Task) => t.id === task.id);
+      expect(found).toBeUndefined();
+    });
   });
 
   describe('getStatuses()', () => {
@@ -119,5 +143,20 @@ describe('TaskService', () => {
       expect(statuses).toContain('Completed');
     });
   });
-});
 
+  describe('localStorage persistence', () => {
+    it('should load tasks from localStorage on initialization', () => {
+      service.addTask('Persisted', '');
+      const countAfterAdd = service.getTasks().length;
+
+      localStorage.clear();
+      const stored = JSON.parse(localStorage.getItem('todo_tasks') || 'null');
+      expect(stored).toBeNull();
+
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({});
+      const newService = TestBed.inject(TaskService);
+      expect(newService.getTasks().length).toBe(3);
+    });
+  });
+});
